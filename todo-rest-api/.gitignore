@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Secret Properties
+!**/src/main/resources/secret.properties
+secret.properties
