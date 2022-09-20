@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    public static final String MSG_ENTITY_IN_USE = "User with ID %s can't be deleted. " +
+    public static final String MSG_ENTITY_IN_USE = "User with ID %d can't be deleted. " +
             "Reason: Other entity is using this entity.";
 
     @Autowired

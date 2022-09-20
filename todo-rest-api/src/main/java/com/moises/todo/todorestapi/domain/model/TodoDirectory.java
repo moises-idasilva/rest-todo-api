@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -11,9 +13,9 @@ import javax.persistence.*;
 @Table(name = "todo_directory")
 public class TodoDirectory {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     @Column(name = "id")
     private Long id;
 
@@ -26,5 +28,8 @@ public class TodoDirectory {
     @OneToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_USER_ID_TODO_DIRECTORY"))
     private User user;
+
+    @OneToMany(mappedBy = "todoDirectory")
+    private List<TodoList> todoLists = new ArrayList<>();
 
 }

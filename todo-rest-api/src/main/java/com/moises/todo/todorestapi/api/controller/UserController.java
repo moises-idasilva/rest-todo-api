@@ -1,6 +1,6 @@
 package com.moises.todo.todorestapi.api.controller;
 
-import com.moises.todo.todorestapi.api.converter.TodoConverter;
+import com.moises.todo.todorestapi.api.converter.TodoDirectoryConverter;
 import com.moises.todo.todorestapi.api.converter.UserConverter;
 import com.moises.todo.todorestapi.api.dto.TodoDirectoryDto;
 import com.moises.todo.todorestapi.api.dto.UserDto;
@@ -37,7 +37,7 @@ public class UserController {
     private TodoDirectoryService todoDirectoryService;
 
     @Autowired
-    private TodoConverter todoConverter;
+    private TodoDirectoryConverter todoDirectoryConverter;
 
     @GetMapping("/{userCode}")
     public UserBasicInfoViewDto find(@PathVariable String userCode) {
@@ -82,10 +82,10 @@ public class UserController {
 
         TodoDirectory todoDirectoryTemp = todoDirectoryService.findOrFail(userCode);
 
-        TodoDirectoryDto todoDirectoryInput = todoConverter.toDto(todoDirectoryTemp);
+        TodoDirectoryDto todoDirectoryInput = todoDirectoryConverter.toDto(todoDirectoryTemp);
 
         TodoDirectory todoDirectoryPresent = todoDirectoryService.findOrFail(userCode);
-        todoConverter.copyToEntity(todoDirectoryInput, todoDirectoryPresent);
+        todoDirectoryConverter.copyToEntity(todoDirectoryInput, todoDirectoryPresent);
         todoDirectoryService.update(todoDirectoryPresent);
 
         User userPresent = userService.findOrFail(userCode);
