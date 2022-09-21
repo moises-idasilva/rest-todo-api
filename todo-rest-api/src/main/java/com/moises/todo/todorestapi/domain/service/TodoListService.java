@@ -42,6 +42,7 @@ public class TodoListService {
 
     }
 
+    @Transactional
     public void delete(Long todoListId) {
 
         try {
