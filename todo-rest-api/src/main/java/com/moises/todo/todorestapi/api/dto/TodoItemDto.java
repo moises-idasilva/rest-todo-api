@@ -1,6 +1,6 @@
 package com.moises.todo.todorestapi.api.dto;
 
-import com.moises.todo.todorestapi.api.dto.view.TodoListBasicViewDto;
+import com.moises.todo.todorestapi.api.dto.view.TodoListBasicViewWithNoItemsDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +13,6 @@ public class TodoItemDto {
     private String description;
     private Boolean completed;
     private String color;
-    private TodoListBasicViewDto todoList;
+    private TodoListBasicViewWithNoItemsDto todoList;
 
 }

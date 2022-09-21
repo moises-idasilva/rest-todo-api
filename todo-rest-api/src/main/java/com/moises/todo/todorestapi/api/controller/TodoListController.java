@@ -49,7 +49,7 @@ public class TodoListController {
 
         TodoList todoList = todoListService.findOrFail(todoListId);
 
-       return todoListConverter.toTodoBasicInfoDto(todoList);
+       return todoListConverter.toTodoListBasicInfoDto(todoList);
 
     }
 
@@ -77,6 +77,7 @@ public class TodoListController {
             todoListConverter.copyToEntity(todoListInputDto, todoListPresent);
 
             return todoListConverter.toDto(todoListService.update(todoListPresent));
+
         } catch (TodoListNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }

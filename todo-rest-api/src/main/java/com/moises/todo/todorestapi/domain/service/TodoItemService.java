@@ -3,6 +3,7 @@ package com.moises.todo.todorestapi.domain.service;
 import com.moises.todo.todorestapi.domain.exception.EntityInUseException;
 import com.moises.todo.todorestapi.domain.exception.TodoItemNotFoundException;
 import com.moises.todo.todorestapi.domain.model.TodoItem;
+import com.moises.todo.todorestapi.domain.model.TodoList;
 import com.moises.todo.todorestapi.domain.repository.TodoItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,8 +20,16 @@ public class TodoItemService {
     @Autowired
     private TodoItemRepo todoItemRepo;
 
+    @Autowired
+    private TodoListService todoListService;
+
     @Transactional
-    public TodoItem save(TodoItem todoItem) {
+    public TodoItem save(Long todoListId, TodoItem todoItem) {
+
+        TodoList todoList = todoListService.findOrFail(todoListId);
+
+        todoItem.setTodoList(todoList);
+        todoItem.setCompleted(false);
 
         return todoItemRepo.save(todoItem);
 
@@ -29,11 +38,14 @@ public class TodoItemService {
     @Transactional
     public TodoItem update(TodoItem todoItem) {
 
-        return save(todoItem);
+        return todoItemRepo.save(todoItem);
 
     }
 
+    @Transactional
     public void delete(Long todoItemId) {
+
+        findOrFail(todoItemId);
 
         try {
             todoItemRepo.deleteTodoItemById(todoItemId);
@@ -54,6 +66,26 @@ public class TodoItemService {
         return todoItemRepo.findTodoItemById(todoItemId).orElseThrow(
                 () -> new TodoItemNotFoundException(todoItemId)
         );
+
+    }
+
+    public void setAsCompleted(Long todoItemId) {
+
+        TodoItem todoItemPresent = findOrFail(todoItemId);
+
+        todoItemPresent.isCompleted();
+
+        update(todoItemPresent);
+
+    }
+
+    public void setAsNotCompleted(Long todoItemId) {
+
+        TodoItem todoItemPresent = findOrFail(todoItemId);
+
+        todoItemPresent.isNotCompleted();
+
+        update(todoItemPresent);
 
     }
 

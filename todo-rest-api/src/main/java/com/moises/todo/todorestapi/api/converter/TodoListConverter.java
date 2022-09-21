@@ -29,7 +29,7 @@ public class TodoListConverter {
 
     }
 
-    public TodoListBasicViewDto toTodoBasicInfoDto(TodoList todoList) {
+    public TodoListBasicViewDto toTodoListBasicInfoDto(TodoList todoList) {
 
         return modelMapper.map(todoList, TodoListBasicViewDto.class);
 
@@ -44,7 +44,7 @@ public class TodoListConverter {
     public List<TodoListBasicViewDto>  toCollectionWithTodoListBasicInfoDtoList(List<TodoList> todoLists) {
 
         return todoLists.stream()
-                .map(todoList -> toTodoBasicInfoDto(todoList))
+                .map(todoList -> toTodoListBasicInfoDto(todoList))
                 .collect(Collectors.toList());
 
     }

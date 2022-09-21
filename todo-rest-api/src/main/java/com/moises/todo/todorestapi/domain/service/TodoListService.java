@@ -26,7 +26,6 @@ public class TodoListService {
     @Transactional
     public TodoList save(String todoDirectoryOwnerCode, TodoList todoList) {
 
-        //String todoDirectoryOwnerCode = todoList.getTodoDirectory().getOwnerCode();
         TodoDirectory todoDirectory = todoDirectoryService.findOrFail(todoDirectoryOwnerCode);
 
         todoList.setTodoDirectory(todoDirectory);
@@ -44,6 +43,8 @@ public class TodoListService {
 
     @Transactional
     public void delete(Long todoListId) {
+
+        findOrFail(todoListId);
 
         try {
             todoListRepo.deleteTodoListById(todoListId);
