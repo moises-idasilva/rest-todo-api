@@ -30,6 +30,10 @@ public class TodoListService {
 
         todoList.setTodoDirectory(todoDirectory);
 
+        if (todoList.getCompleted() == null) {
+            todoList.setCompleted(false);
+        }
+
         return todoListRepo.save(todoList);
 
     }
@@ -63,6 +67,26 @@ public class TodoListService {
     public TodoList findOrFail(Long todoListId) {
 
         return todoListRepo.findTodoListById(todoListId).orElseThrow(() -> new TodoListNotFoundException(todoListId));
+
+    }
+
+    public void setAsCompleted(Long todoListId) {
+
+        TodoList todoListPresent = findOrFail(todoListId);
+
+        todoListPresent.isCompleted();
+
+        update(todoListPresent);
+
+    }
+
+    public void setAsNotCompleted(Long todoListId) {
+
+        TodoList todoListPresent = findOrFail(todoListId);
+
+        todoListPresent.isNotCompleted();
+
+        update(todoListPresent);
 
     }
 

@@ -94,5 +94,19 @@ public class TodoListController {
 
     }
 
+    @PutMapping("/{todoListId}/completed")
+    public void setAsCompleted(@PathVariable Long todoListId) {
+
+        todoListService.setAsCompleted(todoListId);
+
+    }
+
+    @PutMapping("/{todoListId}/not-completed")
+    public void setAsNotCompleted(@PathVariable Long todoListId) {
+
+        todoListService.setAsNotCompleted(todoListId);
+
+    }
+
 
 }

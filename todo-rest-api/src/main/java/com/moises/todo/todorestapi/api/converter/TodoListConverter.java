@@ -37,7 +37,7 @@ public class TodoListConverter {
 
     public void copyToEntity(TodoListInputDto todoListInputDto, TodoList todoList) {
 
-        modelMapper.map(todoListInputDto, todoList);
+            modelMapper.map(todoListInputDto, todoList);
 
     }
 

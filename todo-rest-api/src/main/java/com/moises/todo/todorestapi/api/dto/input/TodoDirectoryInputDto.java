@@ -1,6 +1,5 @@
 package com.moises.todo.todorestapi.api.dto.input;
 
-import com.moises.todo.todorestapi.api.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 
