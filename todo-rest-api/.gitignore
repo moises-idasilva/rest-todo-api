@@ -35,3 +35,7 @@ build/
 # Secret Properties
 !**/src/main/resources/secret.properties
 secret.properties
+
+# Data for development
+!**/src/main/resources/data.sql
+data.sql

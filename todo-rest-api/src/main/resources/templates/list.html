@@ -1,0 +1,60 @@
+<!--
+  ~ Copyright (c) 2022.
+  ~ @Author: Moises I da Silva
+  -->
+
+<html>
+    <body style="max-width: 800px; padding-left: 5px;">
+
+    <#if todoList.todoItemList?has_content>
+        <h1 style="font-size: 20px; color: blue">${userFullName}, here is your ${todoList.name} ToDo List.</h1>
+
+        <table width="100%" border="1" cellspacing="0" cellpadding="0"
+               style="max-width: 600px;">
+
+            <tr class="tableHeader" style="font-size: 16px; background-color: darkslategrey; color: white">
+                <th>Status</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+
+            <#foreach item in todoList.todoItemList>
+            <tr class="tableBody" >
+
+                <#if item.completed = true>
+                     <td style="padding: 5px 5px; font-size: 16px; width: 40px; text-align: center;">
+                         &#10003;</td>
+                <#else>
+                     <td style="padding: 5px 5px; font-size: 16px; width: 40px; text-align: center;"> </td>
+                </#if>
+
+                <td style="padding: 5px 5px; font-size: 16px; width: 190px;">${item.name}</td>
+                <td style="padding: 5px 5px; font-size: 16px; width: 370px;">${item.description}</td>
+
+            </tr>
+             </#foreach>
+
+        </table>
+
+    <p style="font-size: small">Note: The status marked with &#10003; means that the task is completed.</p>
+
+    <p>Thank you for using the ToDo Application.</p>
+
+    <p>Moises da Silva (Developer)</p>
+
+
+    <#else>
+
+    <h1 style="font-size: 20px; color: blue">&#127881; Congrats, ${userFullName}! </h1>
+    <h2 style="font-size: 18px; color: blue">Your ${todoList.name} ToDo List is Empty. Enjoy your free time!
+        &#127882;</h2>
+
+    <p>Thank you for using the ToDo Application.</p>
+
+    <p>Moises da Silva (Developer)</p>
+
+    </#if>
+
+
+    </body>
+</html>

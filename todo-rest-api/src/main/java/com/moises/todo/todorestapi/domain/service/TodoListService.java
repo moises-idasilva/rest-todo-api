@@ -2,14 +2,19 @@ package com.moises.todo.todorestapi.domain.service;
 
 import com.moises.todo.todorestapi.domain.exception.EntityInUseException;
 import com.moises.todo.todorestapi.domain.exception.TodoListNotFoundException;
+import com.moises.todo.todorestapi.domain.exception.UserNotFoundException;
 import com.moises.todo.todorestapi.domain.model.TodoDirectory;
 import com.moises.todo.todorestapi.domain.model.TodoList;
+import com.moises.todo.todorestapi.domain.model.User;
 import com.moises.todo.todorestapi.domain.repository.TodoListRepo;
+import com.moises.todo.todorestapi.domain.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class TodoListService {
@@ -22,6 +27,12 @@ public class TodoListService {
 
     @Autowired
     private TodoDirectoryService todoDirectoryService;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private SendEmailService sendEmail;
 
     @Transactional
     public TodoList save(String todoDirectoryOwnerCode, TodoList todoList) {
@@ -87,6 +98,27 @@ public class TodoListService {
         todoListPresent.isNotCompleted();
 
         update(todoListPresent);
+
+    }
+
+    public void sendEmailWithToDoListLoadedWithToDoItems(String userCode, Long todoListId) {
+
+        Optional<User> user = userRepo.findByUserCode(userCode);
+
+        TodoList todoList = findOrFail(todoListId);
+
+        var message = SendEmailService.Message.builder()
+                .subject("Your ToDo List")
+                .body("list.html")
+                .variable("todoList", todoList)
+                .variable("userFullName", user.get().getFirstName() + " " + user.get().getLastName())
+//                .variable("todoListName", todoList.getName())
+//                .variable("todoListDescription", todoList.getDescription())
+                //   .variable("todoItems", todoList.getTodoItemList())
+                .recipient(user.get().getEmail())
+                .build();
+
+        sendEmail.send(message);
 
     }
 

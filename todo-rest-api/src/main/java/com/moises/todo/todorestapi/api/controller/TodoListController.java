@@ -8,8 +8,8 @@ import com.moises.todo.todorestapi.domain.exception.BusinessException;
 import com.moises.todo.todorestapi.domain.exception.TodoListNotFoundException;
 import com.moises.todo.todorestapi.domain.model.TodoList;
 import com.moises.todo.todorestapi.domain.repository.TodoListRepo;
+import com.moises.todo.todorestapi.domain.service.TodoDirectoryService;
 import com.moises.todo.todorestapi.domain.service.TodoListService;
-import com.moises.todo.todorestapi.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/todo-lists/{userCode}")
+@RequestMapping("/api/todo-lists")
 public class TodoListController {
 
     @Autowired
@@ -31,21 +31,21 @@ public class TodoListController {
     private TodoListConverter todoListConverter;
 
     @Autowired
-    private UserService userService;
+    private TodoDirectoryService todoDirectoryService;
 
     @GetMapping
-    public List<TodoListBasicViewDto> list(@PathVariable String userCode) {
+    public List<TodoListBasicViewDto> list(@RequestParam String userCode) {
 
-        userService.findOrFail(userCode);
+        todoDirectoryService.findOrFail(userCode);
 
         return todoListConverter.toCollectionWithTodoListBasicInfoDtoList(todoListRepo.findAll());
 
     }
 
     @GetMapping("/{todoListId}")
-    public TodoListBasicViewDto getById(@PathVariable String userCode, @PathVariable Long todoListId) {
+    public TodoListBasicViewDto getById(@RequestParam String userCode, @PathVariable Long todoListId) {
 
-        userService.findOrFail(userCode);
+        todoDirectoryService.findOrFail(userCode);
 
         TodoList todoList = todoListService.findOrFail(todoListId);
 
@@ -55,9 +55,9 @@ public class TodoListController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoListDto add(@PathVariable String userCode, @RequestBody TodoListInputDto todoListInputDto) {
+    public TodoListDto add(@RequestParam String userCode, @RequestBody TodoListInputDto todoListInputDto) {
 
-        userService.findOrFail(userCode);
+        todoDirectoryService.findOrFail(userCode);
 
         TodoList todoList = todoListConverter.toEntity(todoListInputDto);
         todoListService.save(userCode, todoList);
@@ -67,10 +67,10 @@ public class TodoListController {
     }
 
     @PutMapping("/{todoListId}")
-    public TodoListDto update(@PathVariable String userCode, @PathVariable Long todoListId,
+    public TodoListDto update(@RequestParam String userCode, @PathVariable Long todoListId,
                               @RequestBody @Valid TodoListInputDto todoListInputDto) {
 
-        userService.findOrFail(userCode);
+        todoDirectoryService.findOrFail(userCode);
 
         try {
             TodoList todoListPresent = todoListService.findOrFail(todoListId);
@@ -86,9 +86,9 @@ public class TodoListController {
 
     @DeleteMapping("/{todoListId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String userCode, @PathVariable Long todoListId) {
+    public void delete(@RequestParam String userCode, @PathVariable Long todoListId) {
 
-        userService.findOrFail(userCode);
+        todoDirectoryService.findOrFail(userCode);
 
         todoListService.delete(todoListId);
 
@@ -105,6 +105,14 @@ public class TodoListController {
     public void setAsNotCompleted(@PathVariable Long todoListId) {
 
         todoListService.setAsNotCompleted(todoListId);
+
+    }
+
+    @PostMapping("/send-todo-list-to -email/{todoListId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendTodoListToUserEmail(@RequestParam String userCode, @PathVariable Long todoListId) {
+
+        todoListService.sendEmailWithToDoListLoadedWithToDoItems(userCode, todoListId);
 
     }
 
