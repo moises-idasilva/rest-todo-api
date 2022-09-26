@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2022.
  * @Author: Moises I da Silva
+ * Email: dev.moises.dasilva@gmail.com
  */
 
 package com.moises.todo.todorestapi.infrastructure.service.email;

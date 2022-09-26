@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022.
+ * @Author: Moises I da Silva
+ * Email: dev.moises.dasilva@gmail.com
+ */
+
 package com.moises.todo.todorestapi.domain.service;
 
 import com.moises.todo.todorestapi.domain.exception.EntityInUseException;

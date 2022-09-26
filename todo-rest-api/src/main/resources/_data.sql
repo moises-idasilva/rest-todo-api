@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022.
+ * @Author: Moises I da Silva
+ * Email: dev.moises.dasilva@gmail.com
+ */
+
 set foreign_key_checks = false;
 
 DELETE FROM todo_item;
