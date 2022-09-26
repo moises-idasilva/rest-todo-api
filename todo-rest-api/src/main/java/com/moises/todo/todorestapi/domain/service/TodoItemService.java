@@ -17,6 +17,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TodoItemService {
 
@@ -36,6 +38,7 @@ public class TodoItemService {
 
         todoItem.setTodoList(todoList);
         todoItem.setCompleted(false);
+        todoItem.setListName(todoList.getName());
 
         return todoItemRepo.save(todoItem);
 
@@ -72,6 +75,14 @@ public class TodoItemService {
         return todoItemRepo.findTodoItemById(todoItemId).orElseThrow(
                 () -> new TodoItemNotFoundException(todoItemId)
         );
+
+    }
+
+    public List<TodoItem> findItemsByTodoList(Long todoListId) {
+
+        todoListService.findOrFail(todoListId);
+
+        return todoItemRepo.findTodoItemsByTodoListId(todoListId);
 
     }
 

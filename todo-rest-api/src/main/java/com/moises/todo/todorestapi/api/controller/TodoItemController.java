@@ -14,10 +14,14 @@ import com.moises.todo.todorestapi.domain.exception.BusinessException;
 import com.moises.todo.todorestapi.domain.exception.TodoItemNotFoundException;
 import com.moises.todo.todorestapi.domain.model.TodoItem;
 import com.moises.todo.todorestapi.domain.repository.TodoItemRepo;
+import com.moises.todo.todorestapi.domain.service.ToDoListPdfService;
 import com.moises.todo.todorestapi.domain.service.TodoItemService;
 import com.moises.todo.todorestapi.domain.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +43,9 @@ public class TodoItemController {
     @Autowired
     private TodoListService todoListService;
 
+    @Autowired
+    private ToDoListPdfService toDoListPdfService;
+
     @GetMapping
     public List<TodoItemBasicViewDto> list(){
 
@@ -52,6 +59,35 @@ public class TodoItemController {
         TodoItem todoItem = todoItemService.findOrFail(todoItemId);
 
         return todoItemConverter.toDto(todoItem);
+
+    }
+
+    @GetMapping(path = "/get-all-by-todo-list/{todoListId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TodoItemBasicViewDto> getByTodoListId(@PathVariable Long todoListId) {
+
+        todoListService.findOrFail(todoListId);
+
+        List<TodoItem> todoItemsByTodoListId = todoItemService.findItemsByTodoList(todoListId);
+
+        return todoItemConverter.todoItemBasicViewDtoList(todoItemsByTodoListId);
+
+    }
+
+    @GetMapping(path = "/get-all-by-todo-list/{todoListId}", produces = MediaType.APPLICATION_PDF_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<byte[]> getByTodoListIdOnPdf(@PathVariable Long todoListId){
+
+        todoListService.findOrFail(todoListId);
+
+        byte[] bytesPdf = toDoListPdfService.issueTodoList(todoListId);
+
+        var headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=todo_list.pdf");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .headers(headers)
+                .body(bytesPdf);
 
     }
 

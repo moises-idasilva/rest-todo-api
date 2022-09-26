@@ -15,6 +15,7 @@ public class TodoItemBasicViewDto {
 
     private Long id;
     private String name;
+    private String listName;
     private String description;
     private Boolean completed;
     private String color;

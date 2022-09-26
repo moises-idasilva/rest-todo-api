@@ -19,7 +19,6 @@ import com.moises.todo.todorestapi.domain.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -58,18 +57,6 @@ public class TodoListController {
         TodoList todoList = todoListService.findOrFail(todoListId);
 
        return todoListConverter.toTodoListBasicInfoDto(todoList);
-
-    }
-
-    @GetMapping(path = "/{todoListId}", produces = MediaType.APPLICATION_PDF_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<byte[]> getByIdOnPdf(@RequestParam String userCode, @PathVariable Long todoListId) {
-
-        todoDirectoryService.findOrFail(userCode);
-
-        TodoList todoList = todoListService.findOrFail(todoListId);
-
-       return null;
 
     }
 

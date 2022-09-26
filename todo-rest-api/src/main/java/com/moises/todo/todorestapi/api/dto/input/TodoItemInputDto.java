@@ -14,6 +14,7 @@ import lombok.Setter;
 public class TodoItemInputDto {
 
     private String name;
+    private String listName;
     private String description;
     private Boolean completed;
     private String color;

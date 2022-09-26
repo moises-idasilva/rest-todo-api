@@ -29,6 +29,9 @@ public class TodoItem {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "list_name")
+    private String listName;
+
     @Column(name = "description")
     private String description;
 
