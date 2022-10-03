@@ -1,4 +1,4 @@
-# rest-todo-api
+# To-Do REST API
 # Author: Moises I. da Silva
 
 To-Do REST API
