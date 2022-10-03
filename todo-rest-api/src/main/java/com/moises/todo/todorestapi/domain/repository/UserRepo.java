@@ -9,6 +9,7 @@ package com.moises.todo.todorestapi.domain.repository;
 import com.moises.todo.todorestapi.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -24,5 +25,9 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     @Query("delete from User u where u.userCode = :userCode")
     void deleteByUserCode(String userCode);
+
+    // Get user to use by the UserDetailsServiceImpl
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    public User getUserByUsername(@Param("username") String username);
 
 }

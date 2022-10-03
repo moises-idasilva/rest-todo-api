@@ -7,6 +7,8 @@
 package com.moises.todo.todorestapi.domain.repository;
 
 import com.moises.todo.todorestapi.domain.model.TodoItem;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +23,8 @@ public interface TodoItemRepo extends JpaRepository<TodoItem, Long> {
     void deleteTodoItemById(Long id);
 
     List<TodoItem> findTodoItemsByTodoListId(Long todoListId);
+
+    Page<TodoItem> findTodoItemsPageByTodoListId(Long todoListId, Pageable pageable);
+
 
 }

@@ -16,6 +16,7 @@ import com.moises.todo.todorestapi.domain.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,9 @@ public class UserService {
     @Autowired
     private TodoDirectoryRepo toDoDirectoryRepo;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Transactional
     public User save(User user) {
 
@@ -50,6 +54,8 @@ public class UserService {
 
             provisoryUser.setTodoDirectory(toDoDirectory);
         }
+
+        provisoryUser.setPassword(encodePassword(provisoryUser));
 
         return userRepo.save(provisoryUser);
 
@@ -144,6 +150,10 @@ public class UserService {
 
         }
 
+    }
+
+    private String encodePassword(User user) {
+        return passwordEncoder.encode(user.getPassword());
     }
 
 

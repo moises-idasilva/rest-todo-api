@@ -13,7 +13,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -61,6 +64,15 @@ public class User {
     @OneToOne
     @JoinColumn(name = "todo_directory_id", foreignKey = @ForeignKey(name = "FK_TODO_DIRECTORY_ID_USER"))
     private TodoDirectory todoDirectory;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles = new HashSet<>();
 
 
     //    Methods to help validate the password

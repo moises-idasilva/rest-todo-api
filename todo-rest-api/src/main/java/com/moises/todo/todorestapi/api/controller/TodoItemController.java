@@ -18,6 +18,10 @@ import com.moises.todo.todorestapi.domain.service.ToDoListPdfService;
 import com.moises.todo.todorestapi.domain.service.TodoItemService;
 import com.moises.todo.todorestapi.domain.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,6 +65,24 @@ public class TodoItemController {
         return todoItemConverter.toDto(todoItem);
 
     }
+
+/*
+    @GetMapping(path = "/get-all-by-todo-list/{todoListId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<TodoItem>> getAllByTodoListId(@PathVariable Long todoListId,
+                                                                         @PageableDefault(page = 0, size = 10, sort = "id",
+                                                                                 direction = Sort.Direction.ASC) Pageable pageable) {
+
+        todoListService.findOrFail(todoListId);
+
+//        Page<TodoItemBasicViewDto> todoItemBasicViewDto = todoItemConverter.todoItemBasicViewDtoPage(
+//                todoItemRepo.findTodoItemsByTodoListId(todoListId));
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+               todoItemService.findAll(todoListId, pageable));
+
+    }
+   */
 
     @GetMapping(path = "/get-all-by-todo-list/{todoListId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TodoItemBasicViewDto> getByTodoListId(@PathVariable Long todoListId) {
